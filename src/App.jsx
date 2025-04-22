@@ -5,6 +5,7 @@ import './App.css'
 import { Outlet } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+import {ToastContainer} from 'react-toastify'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -18,6 +19,8 @@ function App() {
     </main>
 
     <Footer/>
+    <ToastContainer position='top-center' />
+
     </>
   )
 }

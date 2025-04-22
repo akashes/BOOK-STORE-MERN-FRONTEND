@@ -6,8 +6,8 @@ import { IoMdSearch } from "react-icons/io";
 import { FaRegUser } from "react-icons/fa6";
 import { FaRegHeart } from "react-icons/fa";
 import { MdOutlineShoppingCart } from "react-icons/md";
-
 import avatar from '../assets/avatar.png'
+import {useSelector} from 'react-redux'
 
 const navItems=[
 
@@ -18,6 +18,7 @@ const navItems=[
 ]
 
 const NavComp=()=>{
+
     return(
     <ul className='absolute'>
         {
@@ -32,6 +33,7 @@ const NavComp=()=>{
 }
 
 const Navbar = () => {
+    const cartItems=useSelector(state=>state.cart.cartItems)
     const [isDropDownOpen,setIsDropDownOpen]=useState(false)
     const currentUser = true
 
@@ -97,7 +99,7 @@ const Navbar = () => {
 
                 <Link to={'/cart'} className='bg-primary p-1 sm:px-6 px-2 flex items-center rounded-sm'>
                 <MdOutlineShoppingCart/>
-                <span className='text-sm font-semibold sm:ml-1'>0</span>
+                <span className='text-sm font-semibold sm:ml-1'>{cartItems?.length}</span>
 
                 </Link>
 
