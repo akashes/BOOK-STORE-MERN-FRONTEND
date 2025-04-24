@@ -5,13 +5,14 @@ import './App.css'
 import { Outlet } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
-import {ToastContainer} from 'react-toastify'
+import { AuthContextProvider } from './context/AuthContext'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
+<AuthContextProvider  >
 
    <Navbar/>
     <main className='min-h-screen  max-w-screen-2xl mx-auto px-4 py-6 font-primary' >
@@ -19,8 +20,8 @@ function App() {
     </main>
 
     <Footer/>
-    <ToastContainer position='top-center' />
 
+</AuthContextProvider>
     </>
   )
 }

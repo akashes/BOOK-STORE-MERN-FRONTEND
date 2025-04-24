@@ -11,6 +11,7 @@ import 'swiper/css/navigation';
 
 // import required modules
 import { Pagination,Navigation } from 'swiper/modules';
+import { useFetchAllBooksQuery } from '../../redux/features/books/booksApi';
 
 const categoryOptions =[
     'Choose a genre',
@@ -23,28 +24,19 @@ const categoryOptions =[
 
 
 const TopSellers = () => {
-    const[books,setBooks]=useState([])
+  const {data:books=[]}=useFetchAllBooksQuery()
+  console.log(books)
+    // const[books,setBooks]=useState([])
     const[selectedCategory,setSelectedCategory]=useState("Choose a genre")
-    const [filteredBooks,setFilteredBooks]=useState([])
+    // const [filteredBooks,setFilteredBooks]=useState([])
 
-    useEffect(()=>{
-        const fetchBooks = async()=>{
-            const data =await fetch('books.json')
-        const result = await data.json()
-        setBooks(result)
+    
 
-        }
-        fetchBooks()
-        
-    },[])
+    const filteredBooks = selectedCategory ==='Choose a genre'?books:books.filter((book)=>book.category===selectedCategory.toLowerCase())
 
 
-    useEffect(()=>{
 
-        const filteredBooks  = selectedCategory==='Choose a genre'?books:books.filter((book)=>book.category===selectedCategory.toLowerCase())
-        console.log(filteredBooks)
-        setFilteredBooks(filteredBooks)
-    },[selectedCategory,books])
+  
     console.log(selectedCategory)
   return (
     <div className='py-10 mx-10'>
