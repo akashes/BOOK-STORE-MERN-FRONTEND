@@ -19,6 +19,7 @@ export const AuthContextProvider = ({children}) => {
         return await createUserWithEmailAndPassword(auth, email, password)
 
     }
+    //login user
     const loginUser =async(email,password)=>{
         return signInWithEmailAndPassword(auth, email, password)
         
@@ -31,6 +32,7 @@ export const AuthContextProvider = ({children}) => {
 
     }
 
+    //logout 
     const logout=()=>{
         return signOut(auth)
 
