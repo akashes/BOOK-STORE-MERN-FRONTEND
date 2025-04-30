@@ -10,7 +10,10 @@ export const useAuth = () => {
 
 const googleProvider = new GoogleAuthProvider()
 
+
+
 export const AuthContextProvider = ({children}) => {
+
     const [currentUser,setCurrentUser]=useState(null)
     const[loading,setLoading]=useState(true)
     
@@ -26,7 +29,6 @@ export const AuthContextProvider = ({children}) => {
     }
 
     //signup with google
-
     const signInWithGoogle=async()=>{
         return await signInWithPopup(auth,googleProvider)
 
@@ -56,6 +58,7 @@ export const AuthContextProvider = ({children}) => {
 
     const value ={
         currentUser,
+        loading,
         registerUser,
         loginUser,
         signInWithGoogle,
