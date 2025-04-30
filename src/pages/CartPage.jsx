@@ -6,9 +6,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { getImgUrl } from '../utils/getImgUrl';
 
 import Swal from 'sweetalert2'
+import { useAuth } from '../context/AuthContext';
 
 
 const CartPage = () => {
+        const{currentUser,loading}=useAuth()
+    
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -21,13 +24,8 @@ const CartPage = () => {
     }
 
     const handleCheckout=()=>{
-        console.log('inside')
         if(cartItems.length===0){
-            // Swal.fire({
-            //     icon: "error",
-            //     title: "There is nothing to checkout...",
-            //     text: "Please add items to the cart before checkout!!",
-            //   });
+         
                 Swal.fire({
                                 width: 300,
                                 position: "top-center",
@@ -40,6 +38,17 @@ const CartPage = () => {
                               });
 
         }else{
+            if(!currentUser){
+                Swal.fire({
+                    width: 300,
+                    position: "top-center",
+                    icon: "info",
+                    title: "Please login to checkout...",
+                    showConfirmButton: false,
+                    timer: 2000,
+                    focusConfirm: false
+                  });
+            }
             navigate('/checkout')
         }
     }
@@ -59,9 +68,7 @@ const CartPage = () => {
             }
      
         </div>
-        {/* <p className='text-sm text-gray-600 mt-5'>
-            No products found
-        </p> */}
+      
 
 <div className="mt-8">
                         <div className="flow-root">
@@ -75,7 +82,7 @@ const CartPage = () => {
                                                     <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                                         <img
                                                             alt=""
-                                                            src={`${getImgUrl(product?.coverImage)}`}
+                                                            src={`${import.meta.env.VITE_SERVER_URL}/uploads/${product.coverImage}`}
                                                             className="h-full w-full object-cover object-center"
                                                         />
                                                     </div>

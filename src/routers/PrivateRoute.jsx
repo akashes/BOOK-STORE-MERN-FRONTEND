@@ -4,7 +4,7 @@ import { Navigate } from 'react-router-dom'
 import { useLocation } from 'react-router-dom'
 
 const PrivateRoute = ({children}) => {
-    // const location = useLocation()
+    const location = useLocation()
     const{currentUser,loading}=useAuth()
 
     if(loading){
@@ -15,7 +15,7 @@ const PrivateRoute = ({children}) => {
         return children
     }else{
         return <Navigate to="/login" replace
-        //  state={{from:location}}
+         state={{from:location}}
           />
 
     }

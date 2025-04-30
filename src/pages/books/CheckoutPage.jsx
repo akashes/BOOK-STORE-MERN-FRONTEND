@@ -22,6 +22,24 @@ const CheckoutPage = () => {
   const [createOrder,{isLoading,error}]=useCreateOrderMutation()
 
   const onSubmit = async(values) => {
+    console.log('submiting')
+    const{ name, city, state, country, zipcode, phone } = values
+    if (!name || !city || !state || !country || !zipcode || !phone) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Please fill all the fields!'
+      })
+      return
+    }else if(cartItems.length === 0){
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Cart is empty!'
+      })
+      return
+
+    }
     const newOrder = {
       name: values.name,
       email: currentUser?.email,
@@ -35,6 +53,7 @@ const CheckoutPage = () => {
       productIds: cartItems.map(item => item?._id),
       totalPrice: totalPrice
     }
+    console.log(newOrder)
     try {
       Swal.fire({
         title: "Placing Order",
@@ -65,6 +84,9 @@ const CheckoutPage = () => {
   }
 
   if(isLoading) return <div>Loading...</div>
+  if(cartItems.length===0) {
+    navigate('/cart')
+  }
   return (
     <section>
       <div className="min-h-screen p-6 bg-gray-100 flex items-center justify-center">

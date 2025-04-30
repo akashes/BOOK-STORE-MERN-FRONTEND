@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaGoogle } from "react-icons/fa";
 import { useAuth } from '../context/AuthContext';
+import Swal from 'sweetalert2';
 
 const Register = () => {
+    const navigate= useNavigate()
     const {registerUser,signInWithGoogle}=useAuth()
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
 
@@ -14,11 +16,29 @@ const Register = () => {
         console.log(data)
         try {
             await registerUser(data.email,data.password)
-            alert('user registered successfully')
+        
+              Swal.fire({
+                position: "top-center",
+                icon: "success",
+                title: "user registered successfully!",
+                showConfirmButton: false,
+                timer: 1500
+              });
+            navigate('/login',{
+                state:{
+                    email:data.email,
+                }
+            })
+
             
         } catch (error) {
             console.log(error)
-            setMessage('please provide a valid email and password')
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Error Registering user!",
+              });
+            setMessage('Error Registering user')
             
         }
      }
@@ -28,11 +48,21 @@ const Register = () => {
         const handleGoogleSignIn=async()=>{
             try {
               await signInWithGoogle();
-              alert("Login successful")
+              Swal.fire({
+                position: "top-center",
+                icon: "success",
+                title: "Google sign in successfully!",
+                showConfirmButton: false,
+                timer: 1500
+              });
               navigate('/')
               
             } catch (error) {
-              alert('Google sign in failed')
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Google sign in failed!",
+                  });
               
             }
               
@@ -44,13 +74,7 @@ const Register = () => {
       ' >
       <h2 className='font-semibold text-xl'>Please Register</h2>
       <form onSubmit={handleSubmit(onSubmit)} action="" className='flex flex-col gap-4 my-4 '>
-          {/* <label htmlFor="email">
-              <p className='mb-2 text-gray-700 text-sm font-bold '>Email</p>
-          <input
-           {...register("email", { required: true })}
-           type="email" name="email" id="email" placeholder='Email Address' className=' rounded-md shadow py-2 px-3 focus:outline-none w-full leading-tight text-gray-700'  />
-
-          </label> */}
+      
           <label htmlFor="email">
               <p className='mb-2 text-gray-700 text-sm font-bold '>Email</p>
           <input
@@ -66,7 +90,7 @@ const Register = () => {
 
           </label>
           {
-              message && <p className='text-red-500 text-xs italic'>Please enter valid email and password</p>
+              message && <p className='text-red-500 text-xs italic'>{message}</p>
           }
           <button className='bg-blue-500 hover:bg-blue-700 text-white rounded-md py-2 px-4 w-1/3 '>Register</button>
 

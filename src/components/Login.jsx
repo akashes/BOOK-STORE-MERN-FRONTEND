@@ -3,25 +3,38 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { FaGoogle } from "react-icons/fa";
 import { useForm } from 'react-hook-form';
 import { useAuth } from '../context/AuthContext';
-
+import Swal from 'sweetalert2';
 
 
 const Login = () => {
   const navigate =useNavigate()
   const location = useLocation()
+  //get email from location state
+  const emailFromLocation = location.state?.email || 'example@gmail.com'
   const{loginUser,signInWithGoogle}=useAuth()
     const { handleSubmit, register,watch, formState: { errors } } = useForm();
     const onSubmit = async(values) => {
-      console.log(values)
       try {
         await loginUser(values.email,values.password)
-        alert('login successfully')
+           Swal.fire({
+                        position: "top-center",
+                        icon: "success",
+                        title: "login successful!",
+                        showConfirmButton: false,
+                        timer: 1500
+                      });
         const from = location.state?.from?.pathname || '/'
         navigate(from, { replace: true })
         
       } catch (error) {
+           Swal.fire({
+                        position: "top-center",
+                        icon: "error",
+                        title: "login failed!",
+                        showConfirmButton: false,
+                        timer: 1500
+                      });
         setMessage('Please provide a valid email and password')
-        console.log(error)
         
       }
       
@@ -33,10 +46,15 @@ const Login = () => {
       try {
         await signInWithGoogle();
         alert("Login successful")
-        const from = location.state?.from?.pathname || '/'
-        navigate(from, { replace: true })        
+        // const from = location.state?.from?.pathname || '/'
+        // navigate(from, { replace: true })        
+        navigate('/')
       } catch (error) {
-        alert('Google sign in failed')
+           Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "Google sign in failed!",
+                          });
         
       }
         
@@ -52,7 +70,7 @@ const Login = () => {
                 <p className='mb-2 text-gray-700 text-sm font-bold '>Email</p>
             <input
              {...register("email", { required: true })}
-             type="email" name="email" id="email" placeholder='Email Address' className=' rounded-md shadow py-2 px-3 focus:outline-none w-full leading-tight text-gray-700'  />
+             type="email" name="email" id="email" placeholder={`${emailFromLocation}`} className=' rounded-md shadow py-2 px-3 focus:outline-none w-full leading-tight text-gray-700'  />
 
             </label>
             <label htmlFor="password">
